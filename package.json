@@ -1,0 +1,25 @@
+{
+  "name": "notifhome",
+  "version": "1.0.0",
+  "description": "Notifhome API",
+  "main": "notifhome.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "notifhome",
+    "iot",
+    "js",
+    "omega2"
+  ],
+  "author": "Alexandre Klein",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "express-validator": "^5.1.2",
+    "jsonwebtoken": "^8.2.1",
+    "mongoose": "^5.0.15"
+  }
+}
