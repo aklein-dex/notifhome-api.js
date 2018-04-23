@@ -21,28 +21,59 @@ router.post('/', [tokenMiddleware.hasValidToken, check('name').exists()], (req, 
   
   const device = Device(matchedData(req));
   device.save(function(err) {
-    if (err) throw err;
+    if (err) 
+      console.log(err)
 
-    console.log('User saved successfully!');
+    console.log('device saved successfully!');
     res.json({ device });
-    res.sendStatus(200);
   });
 });
 
 router.get('/', tokenMiddleware.hasValidToken, (req, res) => {
-  console.log(req.body)
-  console.log(req.params)
+  Device.find({}, function(err, devices) {
+    if (err) 
+      console.log(err)
+    
+    
+    res.json({ devices });
+  });
 });
-router.post('/', tokenMiddleware.hasValidToken, (req, res) => {
-});
+
 router.get('/:id', tokenMiddleware.hasValidToken, (req, res) => {
+  Device.findById(req.params.id, function(err, device) {
+    if (err)
+      res.send(err);
+    res.json(device);
+  });
+  
 });
+
 router.delete('/:id', tokenMiddleware.hasValidToken, (req, res) => {
-});
-router.put('/:id', tokenMiddleware.hasValidToken, (req, res) => {
+  Device.findByIdAndRemove(req.params.id, function(err, device) {
+    if (err) throw err;
+    console.log(device)
+    // we have deleted the user
+    console.log('Device deleted!');
+    res.json({ device });
+  });
 });
 
-
+router.put('/:id', [tokenMiddleware.hasValidToken, check('name').exists()], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.mapped() });
+  }
+  
+  const device = Device(matchedData(req));
+  
+  Device.findByIdAndUpdate(req.params.id, { name: device.name }, function(err, device) {
+    if (err) throw err;
+    console.log(device)
+    // we have deleted the user
+    console.log('Device updated!');
+    res.json({  });
+  });
+});
 
 
 module.exports = router;
