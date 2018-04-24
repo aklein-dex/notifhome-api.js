@@ -7,6 +7,7 @@ var userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   username: { type: String, required: true, min: 3, max: 18 },
   password: { type: String, required: true },
+  token: { type: String, required: true },
   notifications: [{ type: Schema.Types.ObjectId, ref: 'Notification' }],
   created_at: Date,
   updated_at: Date

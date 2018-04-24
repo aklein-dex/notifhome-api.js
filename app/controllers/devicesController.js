@@ -71,7 +71,7 @@ router.put('/:id', [tokenMiddleware.hasValidToken, check('name').exists()], (req
     console.log(device)
     // we have deleted the user
     console.log('Device updated!');
-    res.json({  });
+    res.status(200);
   });
 });
 
