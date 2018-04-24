@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
 
+// http://www.jyotman.xyz/post/logging-in-node.js-done-right
+const morgan = require('morgan');
+const logger = require('./config/logger');
+
 const bodyParser = require('body-parser')
 
 var mongoose = require('mongoose');
@@ -9,7 +13,17 @@ mongoose.connect('mongodb://localhost/notifhome');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.use(morgan('dev', {
+    skip: function (req, res) {
+        return res.statusCode < 400
+    }, stream: process.stderr
+}));
+
+app.use(morgan('dev', {
+    skip: function (req, res) {
+        return res.statusCode >= 400
+    }, stream: process.stdout
+}));
 
 
 var authController = require('./app/controllers/authController');
@@ -19,9 +33,9 @@ var devicesController = require('./app/controllers/devicesController');
 app.use('/devices', devicesController);
 
 var notificationsController = require('./app/controllers/notificationsController');
-app.use('/devices', notificationsController);
+app.use('/notifications', notificationsController);
 
 var deviceNotificationsController = require('./app/controllers/device/notificationsController');
 app.use('/device', deviceNotificationsController);
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+app.listen(3000, () => logger.info('Example app listening on port 3000!'))
