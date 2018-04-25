@@ -1,6 +1,8 @@
 const express = require('express')
 var router = express.Router();
 
+const logger = require('../../config/logger');
+
 const bodyParser = require('body-parser')
 
 const { check, validationResult } = require('express-validator/check')
@@ -23,22 +25,26 @@ router.post('/notifications', [tokenMiddleware.hasValidToken, check('message').e
   //notification.user...
   //notification.device=...
   notification.save(function(err) {
-    if (err)
-      console.log(err)
-    console.log('Notification saved successfully!');
+    if (err) {
+      var errMsg = "Error while saving notification"
+      logger.error(errMsg + ": " + err);
+      return res.status(500).json({ error: errMsg });
+    }
+
     res.json({ notification });
   });
 });
 
 router.get('/notifications', tokenMiddleware.hasValidToken, (req, res) => {
   Notification.find({}, function(err, notifications) {
-    if (err) 
-      console.log(err)
-    
+    if (err) {
+      var errMsg = "Error while getting notification"
+      logger.error(errMsg + ": " + err);
+      return res.status(500).json({ error: errMsg });
+    }
     
     res.json({ notifications});
   });
-
 });
 
 module.exports = router;

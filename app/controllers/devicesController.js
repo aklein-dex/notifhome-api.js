@@ -1,6 +1,8 @@
 const express = require('express')
 var router = express.Router();
 
+const logger = require('../../config/logger');
+
 const bodyParser = require('body-parser')
 
 const { check, validationResult } = require('express-validator/check')
@@ -21,19 +23,23 @@ router.post('/', [tokenMiddleware.hasValidToken, check('name').exists()], (req, 
   
   const device = Device(matchedData(req));
   device.save(function(err) {
-    if (err) 
-      console.log(err)
+    if (err) {
+      var errMsg = "Error while saving device";
+      logger.error(errMsg + ": " + err);
+      return res.status(500).json({ error: errMsg });
+    }
 
-    console.log('device saved successfully!');
     res.json({ device });
   });
 });
 
 router.get('/', tokenMiddleware.hasValidToken, (req, res) => {
   Device.find({}, function(err, devices) {
-    if (err) 
-      console.log(err)
-    
+    if (err) {
+      var errMsg = "Error while getting devices";
+      logger.error(errMsg + ": " + err);
+      return res.status(500).json({ error: errMsg });
+    } 
     
     res.json({ devices });
   });
@@ -41,8 +47,12 @@ router.get('/', tokenMiddleware.hasValidToken, (req, res) => {
 
 router.get('/:id', tokenMiddleware.hasValidToken, (req, res) => {
   Device.findById(req.params.id, function(err, device) {
-    if (err)
-      res.send(err);
+    if (err) {
+      var errMsg = "Error while getting device";
+      logger.error(errMsg + ": " + err);
+      return res.status(500).json({ error: errMsg });
+    } 
+
     res.json(device);
   });
   
@@ -50,11 +60,13 @@ router.get('/:id', tokenMiddleware.hasValidToken, (req, res) => {
 
 router.delete('/:id', tokenMiddleware.hasValidToken, (req, res) => {
   Device.findByIdAndRemove(req.params.id, function(err, device) {
-    if (err) throw err;
-    console.log(device)
-    // we have deleted the user
-    console.log('Device deleted!');
-    res.json({ device });
+    if (err) {
+      var errMsg = "Error while deleting device";
+      logger.error(errMsg + ": " + err);
+      return res.status(500).json({ error: errMsg });
+    } 
+
+    res.status(200);
   });
 });
 
@@ -67,10 +79,12 @@ router.put('/:id', [tokenMiddleware.hasValidToken, check('name').exists()], (req
   const device = Device(matchedData(req));
   
   Device.findByIdAndUpdate(req.params.id, { name: device.name }, function(err, device) {
-    if (err) throw err;
-    console.log(device)
-    // we have deleted the user
-    console.log('Device updated!');
+    if (err) {
+      var errMsg = "Error while updating device";
+      logger.error(errMsg + ": " + err);
+      return res.status(500).json({ error: errMsg });
+    } 
+
     res.status(200);
   });
 });
