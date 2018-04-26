@@ -1,7 +1,7 @@
 const express = require('express')
 var router = express.Router();
 
-const logger = require('../../config/logger');
+const logger = require('../../../config/logger');
 
 const bodyParser = require('body-parser')
 
@@ -26,8 +26,6 @@ router.get('/notifications', tokenMiddleware.hasValidToken, (req, res) => {
     
     res.json({ notifications});
   });
-
-
 });
 
 

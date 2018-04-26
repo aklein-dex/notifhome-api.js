@@ -13,6 +13,7 @@ let server = require('../notifhome');
 let should = chai.should();
 
 chai.use(chaiHttp);
+
 //Our parent block
 describe('Users', () => {
   beforeEach((done) => { //Before each test we empty the database
@@ -23,11 +24,16 @@ describe('Users', () => {
     
   describe('POST /auth/signin', () => {
     it('it should sign in and return a token', (done) => {
+      let user = {
+          email: 'alex@gmai.com',
+          password: '123456'
+      }
       chai.request(server)
           .post('/auth/signin')
+          .send(user)
           .end((err, res) => {
             res.should.have.status(200);
-            
+            res.body.should.have.property('token');
             done();
           });
     });
