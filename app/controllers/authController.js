@@ -81,7 +81,7 @@ router.post('/signin', [
     
     // check if the password is valid
     var passwordIsValid = bcrypt.compareSync(paramUser.password, user.password);
-    if (!passwordIsValid) 
+    if (!passwordIsValid)
       return res.status(401).json({ error: errMsg });
     
     // Set new token
