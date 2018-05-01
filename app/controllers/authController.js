@@ -57,7 +57,7 @@ router.post('/signup',[
 // to avoid brute force attack.
 router.post('/signin', [
     check('email').isEmail().withMessage('must be an email').trim().normalizeEmail(),
-    check('password', 'passwords must be at least 5 chars long and contain one number').isLength({ min: 5 }).matches(/\d/)
+    check('password', 'passwords must be at least 5 chars long and contain one number').matches(/\d/)
   ], (req, res) => {
   
   const errors = validationResult(req);

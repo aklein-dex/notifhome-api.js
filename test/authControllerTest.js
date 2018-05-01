@@ -20,7 +20,7 @@ chai.use(chaiHttp);
 describe('Users', () => {
   beforeEach((done) => { //Before each test we empty the database
     User.remove({}, (err) => { 
-      done();         
+      done();
     });
   });
     
@@ -43,28 +43,66 @@ describe('Users', () => {
   });
     
   describe('POST /auth/signin', () => {
-    it('it should sign in and return a token', (done) => {
-      var password = bcrypt.hashSync("123456", 8)
-      
-      // Create a user, make sure the password is encrypted
-      var user = new User({
+    var password  = "123456"
+    var hashedPwd = bcrypt.hashSync("123456", 8)
+    var userAttr = {
           email: 'alex@gmai.com',
-          password: password,
+          password: hashedPwd,
           username: 'alex',
           token: 'abcd'
-      });
+      };
+
+  
+    it('it should sign in and return a token', (done) => {
+      user = new User(userAttr);
       user.save(function(err) {
         if (err)
           console.log("Error while registering user: " + err);
           
         // Use non-encrypted password for the http request
-        user.password = "123456"
+        user.password = password
         chai.request(server)
             .post('/auth/signin')
             .send(user)
             .end((err, res) => {
               res.should.have.status(200);
               res.body.should.have.property('token');
+              done();
+            });
+      });
+    });
+    
+    it('it should return 401 if password is invalid', (done) => {
+      user = new User(userAttr);
+      user.save(function(err) {
+        if (err)
+          console.log("Error while registering user: " + err);
+          
+        // Use non-encrypted password for the http request
+        user.password = "abcdefg1"
+        chai.request(server)
+            .post('/auth/signin')
+            .send(user)
+            .end((err, res) => {
+              res.should.have.status(401);
+              done();
+            });
+      });
+    });
+    
+    it('it should return 401 if email is invalid', (done) => {
+      user = new User(userAttr);
+      user.save(function(err) {
+        if (err)
+          console.log("Error while registering user: " + err);
+          
+        // Use non-encrypted password for the http request
+        user.email = "hello@gmail.com"
+        chai.request(server)
+            .post('/auth/signin')
+            .send(user)
+            .end((err, res) => {
+              res.should.have.status(404);
               done();
             });
       });
