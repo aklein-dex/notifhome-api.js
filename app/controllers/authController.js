@@ -77,7 +77,7 @@ router.post('/signin', [
     
     var errMsg = "Email or password invalid"
     if (!user) 
-      return res.status(404).json({ error: errMsg });
+      return res.status(401).json({ error: errMsg });
     
     // check if the password is valid
     var passwordIsValid = bcrypt.compareSync(paramUser.password, user.password);

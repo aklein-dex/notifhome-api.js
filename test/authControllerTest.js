@@ -102,7 +102,7 @@ describe('Users', () => {
             .post('/auth/signin')
             .send(user)
             .end((err, res) => {
-              res.should.have.status(404);
+              res.should.have.status(401);
               done();
             });
       });
