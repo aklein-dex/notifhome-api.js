@@ -36,6 +36,7 @@ router.post('/notifications', [tokenMiddleware.hasValidToken, check('message').e
 });
 
 router.get('/notifications', tokenMiddleware.hasValidToken, (req, res) => {
+  // TODO: it should return only new notifications
   Notification.find({}, function(err, notifications) {
     if (err) {
       var errMsg = "Error while getting notification"
