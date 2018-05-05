@@ -24,13 +24,12 @@ exports.hasValidToken = function(req, res, next) {
       req.token_data = data
     } else {
       // Forbidden
-      res.sendStatus(403);
+      return res.sendStatus(403);
     }
-    
-    // Next middleware
-    next();
   } else {
     // Forbidden
-    res.sendStatus(403);
+    return res.sendStatus(403);
   }
+  // Next middleware
+  next();
 }

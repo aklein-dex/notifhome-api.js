@@ -78,8 +78,7 @@ describe('Devices', () => {
       Device.create([{name: 'Omega2'}, {name: 'raspberry'}], (err) => {
         if (err)
           console.log("Error while creating device: " + err);
-      });
-      chai.request(server)
+        chai.request(server)
           .get('/devices')
           .set('access-token', token)
           .end((err, res) => {
@@ -88,6 +87,7 @@ describe('Devices', () => {
             res.body['devices'].length.should.be.eql(2);
             done();
           });
+      });
     });
   });
   
@@ -115,6 +115,7 @@ describe('Devices', () => {
 
   // These 2 tests (PUT/DELETE) are strange because we don't receive the response from the request...
   // If I change ".put" for ".get" then a response is received. Maybe a bug with chai?
+  // (If I don't set the header, then I have a response)
   //describe('PUT /devices/:id', () => {
     //it('it should edit a device', (done) => {
       

@@ -1,17 +1,24 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+const tokenMiddleware = require('../middlewares/token');
 
 // create a schema
 var deviceSchema = new Schema({
-  name: { type: String, required: true, unique: true },
-  token: { type: String },
+  name:          { type: String, required: true, unique: true },
+  token:         { type: String },
   notifications: [{ type: Schema.Types.ObjectId, ref: 'Notification' }],
-  created_at: Date,
-  updated_at: Date
+  created_at:    Date,
+  updated_at:    Date
 });
 
 // on every save, add the date
 deviceSchema.pre('save', function(next) {
+  
+  if (this.isNew) {
+    // Generate token
+    this.token = tokenMiddleware.generateToken(this);
+  }
+  
   // get the current date
   var currentDate = new Date();
 

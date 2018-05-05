@@ -17,6 +17,8 @@ const tokenMiddleware = require('../../middlewares/token');
 
 
 router.get('/notifications', tokenMiddleware.hasValidToken, (req, res) => {
+  
+  // TODO get only new notifications
   Notification.find({}, function(err, notifications) {
     if (err) {
       var errMsg = "Error while getting notification"

@@ -4,11 +4,8 @@
 process.env.NODE_ENV = 'test';
 
 let mongoose = require("mongoose");
-let User = require('../app/models/user');
 let Device = require('../app/models/device');
 let Notification = require('../app/models/notification');
-
-const bcrypt = require('bcryptjs');
 
 //Require the dev-dependencies
 let chai = require('chai');
@@ -18,22 +15,19 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-
 describe('Notifications', () => {
   var token = ""
   
   before((done) => {
-    // Create a user
-    user = new User({
-      email: 'notification-test@gmail.com',
-      password: "123456",
-      username: 'notification'
+    // Create a device
+    device = new Device({
+      name: 'omega2'
     });
-    user.save(function(err) {
+    device.save(function(err) {
       if (err)
-        console.log("Error while registering user: " + err);
+        console.log("Error while registering device: " + err);
         
-      token = user.token
+      token = device.token
       done();
     });
     
@@ -45,35 +39,6 @@ describe('Notifications', () => {
       done();
     });
   });
-    
-  describe('POST /notifications', () => {
-    it('it should create a notification', (done) => {
-      let notification = {
-          message: 'Hello you',
-      }
-      chai.request(server)
-          .post('/notifications')
-          .set('access-token', token)
-          .send(notification)
-          .end((err, res) => {
-            res.should.have.status(200);
-            done();
-          });
-    });
-    
-    it('it should not create a notification without a message', (done) => {
-      let notification = { }
-      
-      chai.request(server)
-          .post('/notifications')
-          .set('access-token', token)
-          .send(notification)
-          .end((err, res) => {
-            res.should.have.status(422);
-            done();
-          });
-    });
-  });
   
   describe('GET /notifications', () => {
     it('it should get all the notifications', (done) => {
@@ -81,9 +46,9 @@ describe('Notifications', () => {
       Notification.create([{message: 'Should I buy milk?'}, {message: 'I will be late'}], (err) => {
         if (err)
           console.log("Error while creating notifications: " + err);
-      });
-      chai.request(server)
-          .get('/notifications')
+          
+        chai.request(server)
+          .get('/device/notifications')
           .set('access-token', token)
           .end((err, res) => {
             res.should.have.status(200);
@@ -91,6 +56,24 @@ describe('Notifications', () => {
             res.body['notifications'].length.should.be.eql(2);
             done();
           });
+      });
+    });
+    
+    it('it should not return notifications if using invalid token', (done) => {
+      
+      Notification.create([{message: 'Should I buy milk?'}, {message: 'I will be late'}], (err) => {
+        if (err)
+          console.log("Error while creating notifications: " + err);
+          
+        chai.request(server)
+          .get('/device/notifications')
+          .set('access-token', 'wrong')
+          .end((err, res) => {
+            res.should.have.status(403);
+            res.body.should.not.have.property('notifications')
+            done();
+          });
+      });
     });
   });
 });
