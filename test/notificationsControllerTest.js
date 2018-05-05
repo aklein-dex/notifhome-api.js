@@ -20,24 +20,23 @@ chai.use(chaiHttp);
 
 
 describe('Notifications', () => {
-  var password  = "123456"
-  var hashedPwd = bcrypt.hashSync("123456", 8)
-  var token = "abcdef123"
+  var token = ""
   
   before((done) => {
     // Create a user
     user = new User({
-      email: 'alex@gmai.com',
-      password: hashedPwd,
-      username: 'alex',
-      token: token
+      email: 'notification-test@gmail.com',
+      password: "123456",
+      username: 'notification'
     });
     user.save(function(err) {
       if (err)
         console.log("Error while registering user: " + err);
-    
+        
+      token = user.token
       done();
     });
+    
   });
   
   beforeEach((done) => { 
@@ -79,11 +78,17 @@ describe('Notifications', () => {
   describe('GET /notifications', () => {
     it('it should get all the notifications', (done) => {
       
+      Notification.create([{message: 'Should I buy milk?'}, {message: 'I will be late'}], (err) => {
+        if (err)
+          console.log("Error while creating notifications: " + err);
+      });
       chai.request(server)
           .get('/notifications')
           .set('access-token', token)
           .end((err, res) => {
             res.should.have.status(200);
+            res.body['notifications'].should.be.a('array');
+            res.body['notifications'].length.should.be.eql(2);
             done();
           });
     });

@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
 
-
 exports.generateToken = function(user) {
   return jwt.sign({user}, 'TODOChangeSecretKey', { expiresIn: '30 days' });
 }

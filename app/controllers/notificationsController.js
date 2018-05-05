@@ -15,7 +15,7 @@ var Notification = require('../models/notification');
 
 const tokenMiddleware = require('../middlewares/token');
 
-router.post('/notifications', [tokenMiddleware.hasValidToken, check('message').exists()], (req, res) => {
+router.post('/', [tokenMiddleware.hasValidToken, check('message').exists()], (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.mapped() });
@@ -35,7 +35,7 @@ router.post('/notifications', [tokenMiddleware.hasValidToken, check('message').e
   });
 });
 
-router.get('/notifications', tokenMiddleware.hasValidToken, (req, res) => {
+router.get('/', tokenMiddleware.hasValidToken, (req, res) => {
   // TODO: it should return only new notifications
   Notification.find({}, function(err, notifications) {
     if (err) {
