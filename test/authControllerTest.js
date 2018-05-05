@@ -44,12 +44,10 @@ describe('Users', () => {
     
   describe('POST /auth/signin', () => {
     var password  = "123456"
-    var hashedPwd = bcrypt.hashSync("123456", 8)
     var userAttr = {
           email: 'alex@gmai.com',
-          password: hashedPwd,
-          username: 'alex',
-          token: 'abcd'
+          password: password,
+          username: 'alex'
       };
 
   
@@ -59,11 +57,11 @@ describe('Users', () => {
         if (err)
           console.log("Error while registering user: " + err);
           
-        // Use non-encrypted password for the http request
+        // Send "userAttr" and not "user", because user.password is now hashed
         user.password = password
         chai.request(server)
             .post('/auth/signin')
-            .send(user)
+            .send(userAttr)
             .end((err, res) => {
               res.should.have.status(200);
               res.body.should.have.property('token');

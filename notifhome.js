@@ -8,7 +8,21 @@ const logger = require('./config/logger');
 const bodyParser = require('body-parser')
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/notifhome');
+
+// https://stackoverflow.com/questions/45284746/how-to-mock-mongoose
+if (process.env.NODE_ENV === 'test') {
+  const Mockgoose = require('mockgoose').Mockgoose;
+  const mockgoose = new Mockgoose(mongoose);
+
+  mockgoose.prepareStorage().then(function() {
+    mongoose.connect('mongodb://localhost/notifhome', function(err) {
+      console.log('mockgoose connected');
+    });
+  });
+} else {
+  mongoose.connect('mongodb://localhost/notifhome');
+}
+
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))

@@ -20,7 +20,7 @@ router.post('/', [tokenMiddleware.hasValidToken, check('name').exists()], (req, 
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.mapped() });
   }
-  
+
   const device = Device(matchedData(req));
   device.save(function(err) {
     if (err) {
@@ -28,7 +28,6 @@ router.post('/', [tokenMiddleware.hasValidToken, check('name').exists()], (req, 
       logger.error(errMsg + ": " + err);
       return res.status(500).json({ error: errMsg });
     }
-
     res.json({ device });
   });
 });
@@ -75,7 +74,7 @@ router.put('/:id', [tokenMiddleware.hasValidToken, check('name').exists()], (req
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.mapped() });
   }
-  
+
   const device = Device(matchedData(req));
   
   Device.findByIdAndUpdate(req.params.id, { name: device.name }, function(err, device) {
@@ -83,8 +82,8 @@ router.put('/:id', [tokenMiddleware.hasValidToken, check('name').exists()], (req
       var errMsg = "Error while updating device";
       logger.error(errMsg + ": " + err);
       return res.status(500).json({ error: errMsg });
-    } 
-
+    }
+    
     res.status(200);
   });
 });

@@ -28,11 +28,6 @@ router.post('/signup',[
   
   const user = User(matchedData(req));
   
-  // Encrypt the password
-  user.password = bcrypt.hashSync(user.password, 8);
-  // Generate token
-  user.token = tokenMiddleware.generateToken(user);
-  
   user.save(function(err) {
     if (err) {
       logger.error("Error while registering user: " + err);
