@@ -4,11 +4,12 @@ const tokenMiddleware = require('../middlewares/token');
 
 // create a schema
 var deviceSchema = new Schema({
-  name:          { type: String, required: true, unique: true },
-  token:         { type: String },
-  notifications: [{ type: Schema.Types.ObjectId, ref: 'Notification' }],
-  created_at:    Date,
-  updated_at:    Date
+  name:            { type: String, required: true, unique: true },
+  token:           { type: String },
+  notifications:   [{ type: Schema.Types.ObjectId, ref: 'Notification' }],
+  last_request_at: Date,
+  created_at:      Date,
+  updated_at:      Date
 });
 
 // on every save, add the date
