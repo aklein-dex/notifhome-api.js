@@ -24,7 +24,7 @@ router.post('/', [tokenMiddleware.hasValidToken, check('message').exists()], (re
   const notification = Notification(matchedData(req));
   //notification.user...
   //notification.device=...
-  notification.save(function(err) {
+  notification.save((err) => {
     if (err) {
       var errMsg = "Error while saving notification"
       logger.error(errMsg + ": " + err);
@@ -37,7 +37,7 @@ router.post('/', [tokenMiddleware.hasValidToken, check('message').exists()], (re
 
 router.get('/', tokenMiddleware.hasValidToken, (req, res) => {
   // TODO: it should return only new notifications
-  Notification.find({}, function(err, notifications) {
+  Notification.find({}, (err, notifications) => {
     if (err) {
       var errMsg = "Error while getting notification"
       logger.error(errMsg + ": " + err);

@@ -26,7 +26,7 @@ userSchema.pre('save', function(next) {
     this.token = tokenMiddleware.generateToken(this);
   }
   
-  // set the current date
+  // get the current date
   var currentDate = new Date();
   this.updated_at = currentDate;
   if (!this.created_at)

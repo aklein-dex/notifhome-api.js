@@ -28,7 +28,7 @@ router.post('/signup',[
   
   const user = User(matchedData(req));
   
-  user.save(function(err) {
+  user.save((err) => {
     if (err) {
       logger.error("Error while registering user: " + err);
       
@@ -63,7 +63,7 @@ router.post('/signin', [
   const paramUser = matchedData(req);
   
   // Check in DB if the user exists
-  User.findOne({ email: paramUser.email }, function(err, user) {
+  User.findOne({ email: paramUser.email }, (err, user) => {
     if (err) {
       var errMsg = "Error while signing in user"
       logger.error(errMsg + ": " + err);
@@ -81,7 +81,7 @@ router.post('/signin', [
     
     // Set new token
     token = tokenMiddleware.generateToken(paramUser);
-    user.update({ token: token }, function(err, user) {
+    user.update({ token: token }, (err, user) => {
       if (err) {
         var errMsg = "Error while signing in user"
         logger.error(errMsg + ": " + err);

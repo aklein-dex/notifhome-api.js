@@ -22,7 +22,7 @@ router.post('/', [tokenMiddleware.hasValidToken, check('name').exists()], (req, 
   }
 
   const device = Device(matchedData(req));
-  device.save(function(err) {
+  device.save((err) => {
     if (err) {
       var errMsg = "Error while saving device";
       logger.error(errMsg + ": " + err);
@@ -33,7 +33,7 @@ router.post('/', [tokenMiddleware.hasValidToken, check('name').exists()], (req, 
 });
 
 router.get('/', tokenMiddleware.hasValidToken, (req, res) => {
-  Device.find({}, function(err, devices) {
+  Device.find({}, (err, devices) => {
     if (err) {
       var errMsg = "Error while getting devices";
       logger.error(errMsg + ": " + err);
@@ -45,7 +45,7 @@ router.get('/', tokenMiddleware.hasValidToken, (req, res) => {
 });
 
 router.get('/:id', tokenMiddleware.hasValidToken, (req, res) => {
-  Device.findById(req.params.id, function(err, device) {
+  Device.findById(req.params.id, (err, device) => {
     if (err) {
       var errMsg = "Error while getting device";
       logger.error(errMsg + ": " + err);
@@ -58,7 +58,7 @@ router.get('/:id', tokenMiddleware.hasValidToken, (req, res) => {
 });
 
 router.delete('/:id', tokenMiddleware.hasValidToken, (req, res) => {
-  Device.findByIdAndRemove(req.params.id, function(err, device) {
+  Device.findByIdAndRemove(req.params.id, (err, device) => {
     if (err) {
       var errMsg = "Error while deleting device";
       logger.error(errMsg + ": " + err);
@@ -77,7 +77,7 @@ router.put('/:id', [tokenMiddleware.hasValidToken, check('name').exists()], (req
 
   const device = Device(matchedData(req));
   
-  Device.findByIdAndUpdate(req.params.id, { name: device.name }, function(err, device) {
+  Device.findByIdAndUpdate(req.params.id, { name: device.name }, (err, device) => {
     if (err) {
       var errMsg = "Error while updating device";
       logger.error(errMsg + ": " + err);

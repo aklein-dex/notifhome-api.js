@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'test') {
   const mockgoose = new Mockgoose(mongoose);
 
   mockgoose.prepareStorage().then(function() {
-    mongoose.connect('mongodb://localhost/notifhome', function(err) {
+    mongoose.connect('mongodb://localhost/notifhome', (err) => {
       console.log('mockgoose connected');
     });
   });
