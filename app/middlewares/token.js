@@ -1,7 +1,15 @@
 const jwt = require('jsonwebtoken')
 
+
+const logger = require('../../config/logger');
+
 exports.generateToken = function(user) {
-  return jwt.sign({user}, 'TODOChangeSecretKey', { expiresIn: '30 days' });
+  return jwt.sign({user_id: user._id}, 'TODOChangeSecretKey', { expiresIn: '7 days' });
+}
+
+// This token doesn't have an expiration date
+exports.generateTokenForDevice = function(device) {
+  return jwt.sign({device_id: device._id}, 'TODOChangeSecretKey');
 }
 
 verifyToken = function(token) {

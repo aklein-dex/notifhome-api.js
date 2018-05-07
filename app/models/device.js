@@ -14,15 +14,16 @@ var deviceSchema = new Schema({
 
 // on every save, add the date
 deviceSchema.pre('save', function(next) {
+  // get the current date
+  var currentDate = new Date();
   
   if (this.isNew) {
     // Generate token
-    this.token = tokenMiddleware.generateToken(this);
+    this.token = tokenMiddleware.generateTokenForDevice(this);
+    this.last_request_at = currentDate;
+    
   }
   
-  // get the current date
-  var currentDate = new Date();
-
   // change the updated_at field to current date
   this.updated_at = currentDate;
 

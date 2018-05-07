@@ -19,6 +19,7 @@ describe('Notifications', () => {
   var token = ""
   
   before((done) => {
+    
     // Create a device
     device = new Device({
       name: 'omega2'
@@ -40,8 +41,8 @@ describe('Notifications', () => {
     });
   });
   
-  describe('GET /notifications', () => {
-    it('it should get all the notifications', (done) => {
+  describe('GET /device/notifications', () => {
+    it('it should get all the notifications for a device', (done) => {
       
       Notification.create([{message: 'Should I buy milk?'}, {message: 'I will be late'}], (err) => {
         if (err)
@@ -59,7 +60,7 @@ describe('Notifications', () => {
       });
     });
     
-    it('it should not return notifications if using invalid token', (done) => {
+    it('it should not return notifications if using invalid token for a device', (done) => {
       
       Notification.create([{message: 'Should I buy milk?'}, {message: 'I will be late'}], (err) => {
         if (err)

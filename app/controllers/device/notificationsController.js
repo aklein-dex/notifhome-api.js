@@ -9,7 +9,7 @@ const { check, validationResult } = require('express-validator/check')
 const { matchedData, sanitize } = require('express-validator/filter')
 
 
-var mongoose = require('mongoose');
+var Device = require('../../models/device');
 var Notification = require('../../models/notification');
 
 
@@ -18,15 +18,23 @@ const tokenMiddleware = require('../../middlewares/token');
 
 router.get('/notifications', tokenMiddleware.hasValidToken, (req, res) => {
   
-  // TODO get only new notifications
-  Notification.find({}, function(err, notifications) {
+  Device.findOne({ _id: req.token_data.device_id }, (err, device) => {
     if (err) {
-      var errMsg = "Error while getting notification"
+      var errMsg = "Can't find device"
       logger.error(errMsg + ": " + err);
       return res.status(500).json({ error: errMsg });
     }
     
-    res.json({ notifications});
+    // get only new notifications
+    Notification.find({'created_at': {"$gte": device.last_request_at}}, function(err, notifications) {
+      if (err) {
+        var errMsg = "Error while getting notification"
+        logger.error(errMsg + ": " + err);
+        return res.status(500).json({ error: errMsg });
+      }
+      
+      res.json({ notifications});
+    });
   });
 });
 
