@@ -13,23 +13,23 @@ exports.generateTokenForDevice = function(device) {
 }
 
 verifyToken = function(token) {
-  var data
+  var data;
   try {
     data = jwt.verify(token, 'TODOChangeSecretKey');
   } catch(err) {
-    return null
+    return null;
   }
   
-  return data
+  return data;
 }
 
 // Make sure the header has an access_token
 exports.hasValidToken = function(req, res, next) {
   if (req.headers['access-token']) { 
     
-    data = verifyToken(req.headers['access-token'])
+    data = verifyToken(req.headers['access-token']);
     if (data) {
-      req.token_data = data
+      req.token_data = data;
     } else {
       // Forbidden
       return res.sendStatus(403);

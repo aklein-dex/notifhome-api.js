@@ -18,8 +18,8 @@ router.post('/', [tokenMiddleware.hasValidToken, check('message').exists()], (re
   }
 
   const notification = Notification(matchedData(req));
-  //notification.user...
-  //notification.device=...
+  notification.user = req.token_data.user_id
+
   notification.save((err) => {
     if (err) {
       var errMsg = "Error while saving notification";

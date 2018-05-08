@@ -77,7 +77,7 @@ router.post('/signin', [
       return res.status(401).json({ error: errMsg });
     
     // Set new token
-    token = tokenMiddleware.generateToken(paramUser);
+    token = tokenMiddleware.generateToken(user);
     user.update({ token: token }, (err, user) => {
       if (err) {
         var errMsg = "Error while signing in user";

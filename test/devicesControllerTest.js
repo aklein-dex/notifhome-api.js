@@ -83,6 +83,7 @@ describe('Devices', () => {
           .set('access-token', token)
           .end((err, res) => {
             res.should.have.status(200);
+            res.should.be.json;
             res.body['devices'].should.be.a('array');
             res.body['devices'].length.should.be.eql(2);
             done();
@@ -104,6 +105,8 @@ describe('Devices', () => {
           .set('access-token', token)
           .end((err, res) => {
             res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.have.property('name');
             res.body['name'].should.be.eql(deviceName);
             done();
           });
