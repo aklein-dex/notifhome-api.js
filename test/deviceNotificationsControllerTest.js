@@ -42,9 +42,16 @@ describe('Notifications', () => {
   });
   
   describe('GET /device/notifications', () => {
-    it('it should get all the notifications for a device', (done) => {
+    it('it should get all the new notifications for a device', (done) => {
       
-      Notification.create([{message: 'Should I buy milk?'}, {message: 'I will be late'}], (err) => {
+      var pastDate = new Date('December 12, 2013 11:24:00');
+      var presentDate = new Date();
+      
+      // Create 4 notifications in total, but 2 are in the past (older than device.last_request_at)
+      Notification.collection.insert([{message: 'Should I buy milk?', created_at: pastDate}, 
+                                      {message: 'I will be late', created_at: pastDate},
+                                      {message: 'Are you sleeping?', created_at: presentDate}, 
+                                      {message: 'Hello from Hawaii', created_at: presentDate}], (err) => {
         if (err)
           console.log("Error while creating notifications: " + err);
           
