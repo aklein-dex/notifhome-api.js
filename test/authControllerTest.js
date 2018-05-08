@@ -64,6 +64,7 @@ describe('Users', () => {
             .send(userAttr)
             .end((err, res) => {
               res.should.have.status(200);
+              res.should.be.json;
               res.body.should.have.property('token');
               done();
             });

@@ -60,6 +60,7 @@ describe('Notifications', () => {
           .set('access-token', token)
           .end((err, res) => {
             res.should.have.status(200);
+            res.should.be.json;
             res.body['notifications'].should.be.a('array');
             res.body['notifications'].length.should.be.eql(2);
             done();
