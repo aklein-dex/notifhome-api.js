@@ -3,14 +3,11 @@ var router = express.Router();
 
 const logger = require('../../config/logger');
 
-const bodyParser = require('body-parser')
-
 const { check, validationResult } = require('express-validator/check')
 const { matchedData, sanitize } = require('express-validator/filter')
 
 const bcrypt = require('bcryptjs');
 
-var mongoose = require('mongoose');
 var User = require('../models/user');
 
 const tokenMiddleware = require('../middlewares/token');
@@ -35,9 +32,9 @@ router.post('/signup',[
       var errMsg
       
       if (err.code == 11000)
-        errMsg = "Email already existing. Please choose another one."
+        errMsg = "Email already existing. Please choose another one.";
       else
-        errMsg = "Couldn't save the user. Please try again."
+        errMsg = "Couldn't save the user. Please try again.";
         
       return res.status(422).json({ error: errMsg });
     }
@@ -65,12 +62,12 @@ router.post('/signin', [
   // Check in DB if the user exists
   User.findOne({ email: paramUser.email }, (err, user) => {
     if (err) {
-      var errMsg = "Error while signing in user"
+      var errMsg = "Error while signing in user";
       logger.error(errMsg + ": " + err);
       return res.status(500).json({ error: errMsg });
     }
     
-    var errMsg = "Email or password invalid"
+    var errMsg = "Email or password invalid";
     if (!user) 
       return res.status(401).json({ error: errMsg });
     
@@ -83,7 +80,7 @@ router.post('/signin', [
     token = tokenMiddleware.generateToken(paramUser);
     user.update({ token: token }, (err, user) => {
       if (err) {
-        var errMsg = "Error while signing in user"
+        var errMsg = "Error while signing in user";
         logger.error(errMsg + ": " + err);
         return res.status(500).json({ error: errMsg });
       }

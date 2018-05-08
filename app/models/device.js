@@ -21,7 +21,6 @@ deviceSchema.pre('save', function(next) {
     // Generate token
     this.token = tokenMiddleware.generateTokenForDevice(this);
     this.last_request_at = currentDate;
-    
   }
   
   // change the updated_at field to current date

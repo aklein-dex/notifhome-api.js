@@ -3,13 +3,9 @@ var router = express.Router();
 
 const logger = require('../../config/logger');
 
-const bodyParser = require('body-parser')
-
 const { check, validationResult } = require('express-validator/check')
 const { matchedData, sanitize } = require('express-validator/filter')
 
-
-var mongoose = require('mongoose');
 var Notification = require('../models/notification');
 
 
@@ -26,7 +22,7 @@ router.post('/', [tokenMiddleware.hasValidToken, check('message').exists()], (re
   //notification.device=...
   notification.save((err) => {
     if (err) {
-      var errMsg = "Error while saving notification"
+      var errMsg = "Error while saving notification";
       logger.error(errMsg + ": " + err);
       return res.status(500).json({ error: errMsg });
     }
@@ -39,7 +35,7 @@ router.get('/', tokenMiddleware.hasValidToken, (req, res) => {
   // TODO: it should return only new notifications
   Notification.find({}, (err, notifications) => {
     if (err) {
-      var errMsg = "Error while getting notification"
+      var errMsg = "Error while getting notification";
       logger.error(errMsg + ": " + err);
       return res.status(500).json({ error: errMsg });
     }

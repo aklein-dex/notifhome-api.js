@@ -3,13 +3,9 @@ var router = express.Router();
 
 const logger = require('../../config/logger');
 
-const bodyParser = require('body-parser')
-
 const { check, validationResult } = require('express-validator/check')
 const { matchedData, sanitize } = require('express-validator/filter')
 
-
-var mongoose = require('mongoose');
 var Device = require('../models/device');
 
 
