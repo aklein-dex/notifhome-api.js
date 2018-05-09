@@ -8,7 +8,7 @@ const tokenMiddleware = require('../middlewares/token');
 
 var userSchema = new Schema({
   email:         { type: String, required: true, unique: true },
-  username:      { type: String, required: true, min: 3, max: 18 },
+  name:      { type: String, required: true, min: 3, max: 18 },
   password:      { type: String, required: true },
   token:         { type: String },
   notifications: [{ type: Schema.Types.ObjectId, ref: 'Notification' }],

@@ -28,7 +28,7 @@ describe('Users', () => {
     it('it should register the user and return a token', (done) => {
       let user = {
           email: 'alex@gmai.com',
-          username: 'alex',
+          name: 'alex',
           password: '12345678'
       }
       chai.request(server)
@@ -44,7 +44,7 @@ describe('Users', () => {
     it('it should not register the user if password is too short', (done) => {
       let user = {
           email: 'alex@gmai.com',
-          username: 'alex',
+          name: 'alex',
           password: '123456'
       }
       chai.request(server)
@@ -63,7 +63,7 @@ describe('Users', () => {
     var userAttr = {
           email: 'alex@gmai.com',
           password: password,
-          username: 'alex'
+          name: 'alex'
       };
 
   

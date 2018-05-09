@@ -25,7 +25,7 @@ describe('Devices', () => {
     user = new User({
       email: 'device-test@gmail.com',
       password: "12345678",
-      username: 'device'
+      name: 'device'
     });
     user.save(function(err) {
       if (err)

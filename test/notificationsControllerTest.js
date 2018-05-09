@@ -27,7 +27,7 @@ describe('Notifications', () => {
     user = new User({
       email: 'notification-test@gmail.com',
       password: "12345678",
-      username: 'notification'
+      name: 'notification'
     });
     user.save(function(err) {
       if (err)

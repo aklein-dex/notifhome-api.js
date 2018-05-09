@@ -14,7 +14,7 @@ const tokenMiddleware = require('../middlewares/token');
 
 router.post('/sign_up',[ 
     check('email').isEmail().withMessage('must be an email').trim().normalizeEmail(),
-    check('username').exists(),
+    check('name').exists(),
     check('password', 'passwords must be at least 8 chars long and contain one number').isLength({ min: 8 }).matches(/\d/)
   ], (req, res) => {
   
