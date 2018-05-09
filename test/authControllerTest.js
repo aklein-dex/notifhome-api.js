@@ -40,6 +40,22 @@ describe('Users', () => {
             done();
           });
     });
+    
+    it('it should not register the user if password is too short', (done) => {
+      let user = {
+          email: 'alex@gmai.com',
+          username: 'alex',
+          password: '123456'
+      }
+      chai.request(server)
+          .post('/auth/sign_up')
+          .send(user)
+          .end((err, res) => {
+            res.should.have.status(422);
+            res.body.should.not.have.property('token');
+            done();
+          });
+    });
   });
     
   describe('POST /auth/sign_in', () => {
