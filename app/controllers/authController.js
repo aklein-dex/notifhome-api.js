@@ -12,10 +12,10 @@ var User = require('../models/user');
 
 const tokenMiddleware = require('../middlewares/token');
 
-router.post('/signup',[ 
+router.post('/sign_up',[ 
     check('email').isEmail().withMessage('must be an email').trim().normalizeEmail(),
     check('username').exists(),
-    check('password', 'passwords must be at least 5 chars long and contain one number').isLength({ min: 5 }).matches(/\d/)
+    check('password', 'passwords must be at least 8 chars long and contain one number').isLength({ min: 8 }).matches(/\d/)
   ], (req, res) => {
   
   const errors = validationResult(req);
@@ -47,7 +47,7 @@ router.post('/signup',[
 
 // To be more secure, I should check how many time a user failed to log in
 // to avoid brute force attack.
-router.post('/signin', [
+router.post('/sign_in', [
     check('email').isEmail().withMessage('must be an email').trim().normalizeEmail(),
     check('password', 'passwords must be at least 5 chars long and contain one number').matches(/\d/)
   ], (req, res) => {

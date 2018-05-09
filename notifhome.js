@@ -52,6 +52,6 @@ app.use('/notifications', notificationsController);
 var deviceNotificationsController = require('./app/controllers/device/notificationsController');
 app.use('/device', deviceNotificationsController);
 
-app.listen(3000, () => logger.info('Example app listening on port 3000!'))
+app.listen(3001, () => logger.info('Example app listening on port 3001!'))
 
 module.exports = app; // for testing

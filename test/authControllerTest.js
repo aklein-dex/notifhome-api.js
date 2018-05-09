@@ -24,15 +24,15 @@ describe('Users', () => {
     });
   });
     
-  describe('POST /auth/signup', () => {
+  describe('POST /auth/sign_up', () => {
     it('it should register the user and return a token', (done) => {
       let user = {
           email: 'alex@gmai.com',
           username: 'alex',
-          password: '123456'
+          password: '12345678'
       }
       chai.request(server)
-          .post('/auth/signup')
+          .post('/auth/sign_up')
           .send(user)
           .end((err, res) => {
             res.should.have.status(200);
@@ -42,8 +42,8 @@ describe('Users', () => {
     });
   });
     
-  describe('POST /auth/signin', () => {
-    var password  = "123456"
+  describe('POST /auth/sign_in', () => {
+    var password  = "12345678"
     var userAttr = {
           email: 'alex@gmai.com',
           password: password,
@@ -60,7 +60,7 @@ describe('Users', () => {
         // Send "userAttr" and not "user", because user.password is now hashed
         user.password = password
         chai.request(server)
-            .post('/auth/signin')
+            .post('/auth/sign_in')
             .send(userAttr)
             .end((err, res) => {
               res.should.have.status(200);
@@ -78,9 +78,9 @@ describe('Users', () => {
           console.log("Error while registering user: " + err);
           
         // Use non-encrypted password for the http request
-        user.password = "abcdefg1"
+        user.password = "abcdefg1645"
         chai.request(server)
-            .post('/auth/signin')
+            .post('/auth/sign_in')
             .send(user)
             .end((err, res) => {
               res.should.have.status(401);
@@ -98,7 +98,7 @@ describe('Users', () => {
         // Use non-encrypted password for the http request
         user.email = "hello@gmail.com"
         chai.request(server)
-            .post('/auth/signin')
+            .post('/auth/sign_in')
             .send(user)
             .end((err, res) => {
               res.should.have.status(401);
