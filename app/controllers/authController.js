@@ -12,7 +12,7 @@ var User = require('../models/user');
 
 const tokenMiddleware = require('../middlewares/token');
 
-router.post('/sign_up',[ 
+router.post('/',[ 
     check('email').isEmail().withMessage('must be an email').trim().normalizeEmail(),
     check('name').exists(),
     check('password', 'passwords must be at least 8 chars long and contain one number').isLength({ min: 8 }).matches(/\d/)
@@ -40,7 +40,16 @@ router.post('/sign_up',[
     }
     
     logger.debug('User saved successfully: ' + user.email);
-    res.json({ token: user.token });
+    res.set({
+      "access-token": user.token,
+      "token-type": "Bearer",
+      });
+    res.json({ status: "success",
+               data: {
+                 email: user.email,
+                 name: user.name
+               }
+            });
   });
 
 });
@@ -78,14 +87,22 @@ router.post('/sign_in', [
     
     // Set new token
     token = tokenMiddleware.generateToken(user);
-    user.update({ token: token }, (err, user) => {
+    user.update({ token: token }, (err, rawResponse) => {
       if (err) {
         var errMsg = "Error while signing in user";
         logger.error(errMsg + ": " + err);
         return res.status(500).json({ error: errMsg });
       }
       
-      res.json({ token });
+      res.set({
+        "access-token": token,
+        "token-type": "Bearer",
+        });
+      res.json({ data: {
+                  email: user.email,
+                  name:  user.name
+                }
+              });
     });
   });
   

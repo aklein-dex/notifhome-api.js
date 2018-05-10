@@ -24,7 +24,7 @@ describe('Users', () => {
     });
   });
     
-  describe('POST /auth/sign_up', () => {
+  describe('POST /auth', () => {
     it('it should register the user and return a token', (done) => {
       let user = {
           email: 'alex@gmai.com',
@@ -32,11 +32,12 @@ describe('Users', () => {
           password: '12345678'
       }
       chai.request(server)
-          .post('/auth/sign_up')
+          .post('/auth')
           .send(user)
           .end((err, res) => {
             res.should.have.status(200);
-            res.body.should.have.property('token');
+            res.body['data'].should.have.property('name');
+            res.should.have.header('access-token');
             done();
           });
     });
@@ -48,11 +49,12 @@ describe('Users', () => {
           password: '123456'
       }
       chai.request(server)
-          .post('/auth/sign_up')
+          .post('/auth')
           .send(user)
           .end((err, res) => {
             res.should.have.status(422);
-            res.body.should.not.have.property('token');
+            res.body.should.not.have.property('name');
+            res.should.not.have.header('access-token');
             done();
           });
     });
@@ -81,7 +83,8 @@ describe('Users', () => {
             .end((err, res) => {
               res.should.have.status(200);
               res.should.be.json;
-              res.body.should.have.property('token');
+              res.body['data'].should.have.property('name');
+              res.should.have.header('access-token');
               done();
             });
       });
@@ -100,6 +103,7 @@ describe('Users', () => {
             .send(user)
             .end((err, res) => {
               res.should.have.status(401);
+              res.should.not.have.header('access-token');
               done();
             });
       });
@@ -118,6 +122,7 @@ describe('Users', () => {
             .send(user)
             .end((err, res) => {
               res.should.have.status(401);
+              res.should.not.have.header('access-token');
               done();
             });
       });
