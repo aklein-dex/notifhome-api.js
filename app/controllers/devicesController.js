@@ -61,7 +61,7 @@ router.delete('/:id', tokenMiddleware.hasValidToken, (req, res) => {
       return res.status(500).json({ error: errMsg });
     } 
 
-    res.status(200);
+    return res.sendStatus(204);
   });
 });
 
@@ -73,14 +73,14 @@ router.put('/:id', [tokenMiddleware.hasValidToken, check('name').exists()], (req
 
   const device = Device(matchedData(req));
   
-  Device.findByIdAndUpdate(req.params.id, { name: device.name }, (err, device) => {
+  Device.findByIdAndUpdate(req.params.id, { name: device.name }, {new: true}, (err, updatedDevice) => {
     if (err) {
       var errMsg = "Error while updating device";
       logger.error(errMsg + ": " + err);
       return res.status(500).json({ error: errMsg });
     }
     
-    res.status(200);
+    return res.status(200).json({ device: updatedDevice });
   });
 });
 

@@ -116,48 +116,45 @@ describe('Devices', () => {
     });
   });
 
-  // These 2 tests (PUT/DELETE) are strange because we don't receive the response from the request...
-  // If I change ".put" for ".get" then a response is received. Maybe a bug with chai?
-  // (If I don't set the header, then I have a response)
-  //describe('PUT /devices/:id', () => {
-    //it('it should edit a device', (done) => {
+  describe('PUT /devices/:id', () => {
+    it('it should edit a device', (done) => {
       
-      //var deviceName = 'MyDevice'
-      //let device = new Device({name: deviceName});
-      //device.save((err, device) => {
-        //if (err)
-          //console.log("Error while creating device: " + err);
+      var deviceName = 'MyDevice'
+      let device = new Device({name: deviceName});
+      device.save((err, device) => {
+        if (err)
+          console.log("Error while creating device: " + err);
           
-        //chai.request(server)
-          //.put('/devices/' + device.id)
-          //.set('access-token', token)
-          //.send({'name': 'BanadaBread'})
-          //.end((err, res) => {
-            //res.should.have.status(200);
-            //res.body.should.have.property('name').eql('BanadaBread');
-            //done();
-          //});
-        //});
-    //});
-  //});
+        chai.request(server)
+          .put('/devices/' + device.id)
+          .set('access-token', token)
+          .send({'name': 'BanadaBread'})
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body['device'].should.have.property('name').eql('BanadaBread');
+            done();
+          });
+        });
+    });
+  });
   
-  //describe('DELETE /devices/:id', () => {
-    //it('it should delete a device', (done) => {
+  describe('DELETE /devices/:id', () => {
+    it('it should delete a device', (done) => {
       
-      //var deviceName = 'MyDevice'
-      //let device = new Device({name: deviceName});
-      //device.save((err, device) => {
-        //if (err)
-          //console.log("Error while creating device: " + err);
+      var deviceName = 'MyDevice'
+      let device = new Device({name: deviceName});
+      device.save((err, device) => {
+        if (err)
+          console.log("Error while creating device: " + err);
         
-        //chai.request(server)
-          //.delete('/devices/' + device.id)
-          //.set('access-token', token)
-          //.end((err, res) => {
-            //res.should.have.status(200);
-            //done();
-          //});
-      //});
-    //});
-  //});
+        chai.request(server)
+          .delete('/devices/' + device.id)
+          .set('access-token', token)
+          .end((err, res) => {
+            res.should.have.status(204);
+            done();
+          });
+      });
+    });
+  });
 });
