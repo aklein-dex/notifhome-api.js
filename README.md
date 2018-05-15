@@ -34,12 +34,14 @@ Run the following command to start the server:
 $ nodemon
 ````
 
-See the project [Notifhome-api](https://github.com/aklein-dex/notifhome-api) for the API.
-
 If you don't have nodemon installed then install it:
 ````
 $ npm install -g nodemon
 ````
+
+See the project [Notifhome-api](https://github.com/aklein-dex/notifhome-api) for the API. 
+The routes are the same but the responses are a little bit different. Also you only need
+to provide the header **access-token**.
 
 ## How to run the tests
 
