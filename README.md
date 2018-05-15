@@ -1,9 +1,17 @@
 # Notifhome-api.js
 
-Notifhome-api.js is the nodejs version of Notifhome-api.
+Notifhome-api.js is the nodejs version of [Notifhome-api](https://github.com/aklein-dex/notifhome-api) (rails).
 
 This is my very first project using nodejs. Nodejs is popular and I was curious to explore and learn more about it.
 
+So far I'm plannig to work more on the rails version and update this repo when I have time.
+
+Some plugins used:
+
+* express
+* mocha
+* chai
+* mongoose
 
 
 ## How to install mongodb
@@ -17,4 +25,27 @@ $ sudo service mongod start
 $ mongo --host 127.0.0.1:27017
 > use notifhome
 > db.createCollection('users')
+````
+
+## How to start the server
+
+Run the following command to start the server:
+````
+$ nodemon
+````
+
+See the project [Notifhome-api](https://github.com/aklein-dex/notifhome-api) for the API.
+
+If you don't have nodemon installed then install it:
+````
+$ npm install -g nodemon
+````
+
+## How to run the tests
+
+Run the following command to run the tests:
+````
+$ npm test
+# or to test a single file
+$ npm test test/devicesControllerTest.js
 ````
